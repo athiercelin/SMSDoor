@@ -1,6 +1,8 @@
 # SMS Door Control
 This project allows to build a SMS controlled door buzzer.
 
+**This is an active project that will change as often as required**
+
 ## Premises
 I rent an old apartment in SF. There is no door man so deliveries are difficult.
 
@@ -45,12 +47,19 @@ I then modified it to deliver the feature I wanted.
 All you need to do is to upload the .ino into the arduino and you are good to go.
 
 ## Usage
-TBD
+There is two sets of access type: Guest and Master. Master is the owner of the device while guest is anyone trying to access the door with the access code.
 
-## Notes
-Solder: You can use lead free, just get flux and research what you are doing
+### Guest
+Guest only need to send a text with the access code you set at the begining of the file or modified using the master commands.
 
-3D Printer: You can use services like 3dhubs.com instead of getting a machine
+### Master
+Master command are bound to the register phone number. It's not exactly über safe, but decent enough for the purpose.
+
+Here are the list of the commands to be sent by text message.
+
+`OVERRIDE`: Opens the door the exact same way the access code door for the guests.
+
+`UPDATECODE new_code`: Updates the code until the device is rebooted.
 
 
 ## Questions

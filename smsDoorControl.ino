@@ -16,18 +16,7 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ****************************************************/
-
-/*
-  THIS CODE IS STILL IN PROGRESS!
-
-  Open up the serial console on the Arduino at 115200 baud to interact with FONA
-
-
-  This code will receive an SMS, identify the sender's phone number, and automatically send a response
-
-  For use with FONA 800 & 808, not 3G
-*/
-
+ 
 #include "Adafruit_FONA.h"
 
 /** Settings **/
@@ -164,8 +153,8 @@ void openDoor() {
   // Turn on pin
   digitalWrite(relayPin, HIGH);
 
-  // Wait 30s
-  delay(3000);
+  // Wait 20s
+  delay(20000);
 
   // Turn off pin
   digitalWrite(relayPin, LOW);

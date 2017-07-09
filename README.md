@@ -33,6 +33,20 @@ Solder - https://www.amazon.com/Kester-24-6337-0027-Solder-Alloy-Diameter/dp/B01
 
 3D Printer - http://shop.prusa3d.com/en/3d-printers/59-original-prusa-i3-mk2-kit.html
 
+## Assembly
+TBD
+
+## Software
+
+I started this project using one of the sample provided by Adafruit.
+
+I then modified it to deliver the feature I wanted.
+
+All you need to do is to upload the .ino into the arduino and you are good to go.
+
+## Usage
+TBD
+
 ## Notes
 Solder: You can use lead free, just get flux and research what you are doing
 

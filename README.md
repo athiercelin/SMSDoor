@@ -13,10 +13,8 @@ Finally, because I rent, I wanted a none intrusive and damaging system.
 
 ## Bill of Materials
 
-
-
 |Picture|Label|Comments|
-|-|-|-|-|
+|---|----|----|
 | ![img](./images/50-06.jpg =100x) | [Arduino Uno R3 (Atmega328 - assembled)](https://www.adafruit.com/product/50) | The brain of the project|
 | ![img](./images/2468-06.jpg =100x) | [Adafruit FONA 800 Shield - Voice/Data Cellular GSM for Arduino](https://www.adafruit.com/product/2468) | Making your life easy to access by SMS|
 | ![img](./images/2505-02.jpg =100x) | [GSM 2G SIM Card from Ting & Adafruit - Data/Voice/Text USA Only](https://www.adafruit.com/product/2505) | Cheap plan, you can use others too |

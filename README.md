@@ -35,8 +35,18 @@ Solder - https://www.amazon.com/Kester-24-6337-0027-Solder-Alloy-Diameter/dp/B01
 
 3D Printer - http://shop.prusa3d.com/en/3d-printers/59-original-prusa-i3-mk2-kit.html
 
+Hot glue gun
+
+
 ## Assembly
-TBD
+1. Print the case
+2. Tap the mounting hole for the boards
+3. Hot glue the JST connector into its location
+4. Screw in the relay module
+5. Place the battery and zip tie it
+6. Place the Fona + Arduino and screw it in place
+7. Connect a JST cable to your door bell button
+8. Place the case close and connect the JST connector.
 
 ## Software
 

@@ -1,4 +1,10 @@
-/***************************************************
+/* 
+ *  Written by Arnaud Thiercelin on Jul 23, 2017
+ *  Derived from the sample code from Adafruit - see header below
+ *  MIT license see License.md for more information
+ */
+ 
+ /***************************************************
   This is an example for our Adafruit FONA Cellular Module
 
   Designed specifically to work with the Adafruit FONA
@@ -25,7 +31,7 @@ char *masterCallerID = "+1INSERTNUMBER";
 
 // This code is what should be sent by your host to gain access.
 // It should be long enough to be secure, short enough to be type easily.
-char *entryCode = "123456";
+char *entryCode = "123456"; 
 
 // when debug mode is active, the execution is driven by the serial interface with the arduino.
 bool debugMode = true;
@@ -82,7 +88,7 @@ void setup() {
   Serial.println("FONA Ready");
 
   pinMode(relayPin, OUTPUT);
-  digitalWrite(relayPin, LOW);
+  digitalWrite(relayPin, HIGH);
 }
 
 char fonaInBuffer[64];          //for notifications from the FONA
@@ -151,13 +157,13 @@ void loop() {
 
 void openDoor() {
   // Turn on pin
-  digitalWrite(relayPin, HIGH);
+  digitalWrite(relayPin, LOW);
 
   // Wait 20s
   delay(20000);
 
   // Turn off pin
-  digitalWrite(relayPin, LOW);
+  digitalWrite(relayPin, HIGH);
 }
 
 /** Host functions **/

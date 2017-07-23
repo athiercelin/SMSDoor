@@ -57,13 +57,13 @@ I then modified it to deliver the feature I wanted.
 All you need to do is to upload the .ino into the arduino and you are good to go.
 
 ## Usage
-There is two sets of access type: Guest and Master. Master is the owner of the device while guest is anyone trying to access the door with the access code.
+There is two sets of access type: Guest and Host. Host is the owner of the device while guest is anyone trying to access the door with the access code.
 
 ### Guest
-Guest only need to send a text with the access code you set at the begining of the file or modified using the master commands.
+Guest only need to send a text with the access code you set at the begining of the file or modified using the host commands.
 
-### Master
-Master command are bound to the register phone number. It's not exactly über safe, but decent enough for the purpose.
+### Host
+Host command are bound to the register phone number. It's not exactly über safe, but decent enough for the purpose.
 
 Here are the list of the commands to be sent by text message.
 

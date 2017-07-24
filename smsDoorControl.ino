@@ -1,10 +1,10 @@
 /*
- *  Written by Arnaud Thiercelin on Jul 23, 2017
- *  Derived from the sample code from Adafruit - see header below
- *  MIT license see License.md for more information
- */
+    Written by Arnaud Thiercelin on Jul 23, 2017
+    Derived from the sample code from Adafruit - see header below
+    MIT license see License.md for more information
+*/
 
- /***************************************************
+/***************************************************
   This is an example for our Adafruit FONA Cellular Module
 
   Designed specifically to work with the Adafruit FONA
@@ -21,23 +21,23 @@
 
   Written by Limor Fried/Ladyada for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
- ****************************************************/
+****************************************************/
 
 #include "Adafruit_FONA.h"
 
 /** Settings **/
 // This host ID is to be set in order to identify the owner of this SMSDoor
-char *hostCallerID = "+1INSERTNUMBER";
+#define hostCallerID "+1INSERTNUMBER"
 
 // This code is what should be sent by your host to gain access.
 // It should be long enough to be secure, short enough to be type easily.
-char *entryCode = "123456";
+#define entryCode "123456"
 
 // when debug mode is active, the execution is driven by the serial interface with the arduino.
-bool debugMode = false;
+#define debugMode false
 
 // when test mode is active, the host commands are ignored so you can send guest command from the host number
-bool testMode = false;
+#define testMode false
 
 /** Implementation **/
 #define FONA_RX 2
@@ -92,9 +92,6 @@ void setup() {
 
   pinMode(relayPin, OUTPUT);
   digitalWrite(relayPin, HIGH);
-
-  // Flush SMS from card
-  deleteAllSMS();
 }
 
 char fonaInBuffer[64];          //for notifications from the FONA
@@ -124,6 +121,8 @@ void loop() {
 
       char callerIDbuffer[32];  //we'll store the SMS sender number in here
 
+      memset(&callerIDbuffer, 0, 31);
+
       // Retrieve SMS sender address/phone number.
       if (! fona.getSMSSender(slot, callerIDbuffer, 31)) {
         Serial.println("Didn't find SMS message in slot!");
@@ -138,11 +137,12 @@ void loop() {
       } else {
         char *smsMessage = messageBuffer;
 
+        smsMessage[smslen] = 0;
         // Check is callerID is Host
         if (strcmp(callerIDbuffer, hostCallerID) == 0 && testMode == false) {
           handleHostRequest(smsMessage);
         } else {
-          handleHostEntryRequest(callerIDbuffer, smsMessage);
+          handleGuestRequest(callerIDbuffer, smsMessage);
         }
 
         // delete the original msg after it is processed
@@ -165,47 +165,45 @@ void openDoor() {
   // Turn on pin
   digitalWrite(relayPin, LOW);
 
-  // Wait 20s
-  delay(20000);
+  // Wait 10s
+  delay(10000);
 
   // Turn off pin
   digitalWrite(relayPin, HIGH);
 }
 
-void deleteAllSMS() {
-   int slot = 0;
-
-   for (; slot < 244; slot++) {
-        if (fona.deleteSMS(slot)) {
-          Serial.print(F("SMS Deleted at Slot:"));
-          Serial.println(slot);
-        }
-   }
-}
-
-/** Host functions **/
-void handleHostEntryRequest(char *callerIDbuffer, char *smsCode) {
+/** Guest functions **/
+void handleGuestRequest(char *callerID, char *smsCode) {
   // Check the message content for a valid key
   bool hasValidKey = false;
 
   Serial.print("SMS Received:");
   Serial.println(smsCode);
 
-  if (!strcmp(smsCode, entryCode)) {
+  Serial.print("FROM:");
+  Serial.println(callerID);
+
+  
+  if (strcmp(smsCode, entryCode) == 0) {
     hasValidKey = true;
+  } else {
+    Serial.print("Failed code ");
+    Serial.print(smsCode);
+    Serial.print(" -> expected:");
+    Serial.println(entryCode);
   }
 
   //Send back an automatic response based on key
   if (hasValidKey == true) {
     Serial.println("Sending Success Response...");
-    if (!fona.sendSMS(callerIDbuffer, "Access Granted!")) {
+    if (!fona.sendSMS(callerID, "Access Granted!")) {
       Serial.println(F("Failed sending response"));
     } else {
       Serial.println(F("Sent!"));
     }
   } else {
     Serial.println("Sending Error Response...");
-    if (!fona.sendSMS(callerIDbuffer, "Access Denied.")) {
+    if (!fona.sendSMS(callerID, "Access Denied.")) {
       Serial.println(F("Failed sending response"));
     } else {
       Serial.println(F("Sent!"));
@@ -215,9 +213,9 @@ void handleHostEntryRequest(char *callerIDbuffer, char *smsCode) {
   // Act on door based on key.
   if (hasValidKey == true) {
     openDoor();
-    h_notifyAccess(true, callerIDbuffer);
+    h_notifyAccess(true, callerID);
   } else {
-    h_notifyAccess(false, callerIDbuffer);
+    h_notifyAccess(false, callerID);
   }
 }
 
@@ -231,10 +229,10 @@ void handleHostRequest(char *smsMessage) {
   Serial.print(", arg: ");
   Serial.println(value);
 
-  if (!strcmp(cmd, "UPDATECODE")) { // Update Code To Enter
-    h_updateEntryCode(value);
-  } else if (!strcmp(cmd, "OVERRIDE")) { // Manual Access
+  if (!strcmp(cmd, "OVERRIDE")) { // Manual Access
     h_manualAccess();
+  } else if (!strcmp(cmd, "FLUSHSMS")) {
+    h_deleteAllSMS();
   } else {
     Serial.println("Unknownd Host Command");
     fona.sendSMS(hostCallerID, "Unknownd Host Command");
@@ -242,9 +240,9 @@ void handleHostRequest(char *smsMessage) {
 }
 
 // This functions notifies the host of entries.
-void h_notifyAccess(bool access, char *host) {
+void h_notifyAccess(bool access, char *guest) {
   if (access == true) {
-    char *notifMessage = strcat("Access granted to: ", host);
+    char *notifMessage = strcat("Access granted to: ", guest);
 
     Serial.println("Sending Success Response...");
     if (!fona.sendSMS(hostCallerID, notifMessage)) {
@@ -253,7 +251,7 @@ void h_notifyAccess(bool access, char *host) {
       Serial.println(F("Sent!"));
     }
   } else {
-    char *notifMessage = strcat("Access denied to: ", host);
+    char *notifMessage = strcat("Access denied to: ", guest);
 
     Serial.println("Sending Error Response...");
     if (!fona.sendSMS(hostCallerID, notifMessage)) {
@@ -264,13 +262,26 @@ void h_notifyAccess(bool access, char *host) {
   }
 }
 
-void h_updateEntryCode(char *newCode) {
-  Serial.print("Code updated to: ");
-  Serial.println(newCode);
-  entryCode = newCode;
-}
-
 void h_manualAccess() {
-  Serial.println("Manual Access Granted Sir.");
+  char *notifMessage = "Manual Access Granted Sir.";
+  Serial.println(notifMessage);
+  if (!fona.sendSMS(hostCallerID, notifMessage)) {
+    Serial.println(F("Failed"));
+  } else {
+    Serial.println(F("Sent!"));
+  }
   openDoor();
 }
+
+void h_deleteAllSMS() {
+  int slot = 0;
+
+  for (; slot < 244; slot++) {
+    if (fona.deleteSMS(slot)) {
+      Serial.print(F("SMS Deleted at Slot:"));
+      Serial.println(slot);
+    }
+  }
+}
+
+

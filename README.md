@@ -35,7 +35,10 @@ Solder - https://www.amazon.com/Kester-24-6337-0027-Solder-Alloy-Diameter/dp/B01
 
 3D Printer - http://shop.prusa3d.com/en/3d-printers/59-original-prusa-i3-mk2-kit.html
 
-Hot glue gun
+Hot Glue Gun -
+
+M5 Screws -
+
 
 
 ## Assembly
@@ -69,8 +72,7 @@ Here are the list of the commands to be sent by text message.
 
 `OVERRIDE`: Opens the door the exact same way the access code door for the guests.
 
-`UPDATECODE new_code`: Updates the code until the device is rebooted.
-
+`FLUSHSMS` : deletes all SMS.
 
 ## Questions
 You can reach me on social media or in the issues here.

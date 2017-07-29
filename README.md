@@ -1,7 +1,9 @@
 # SMS Door Control
-This project allows to build a SMS controlled door buzzer.
+This project allows you to build a SMS controlled door buzzer with minimal impact to existing infrastructure.
 
 **This is an active project that will change as often as required**
+
+![img](./images/smsControlledDoor_medium.jpeg)
 
 ## Premises
 I rent an old apartment in SF. There is no door man so deliveries are difficult.
@@ -35,29 +37,32 @@ Solder - https://www.amazon.com/Kester-24-6337-0027-Solder-Alloy-Diameter/dp/B01
 
 3D Printer - http://shop.prusa3d.com/en/3d-printers/59-original-prusa-i3-mk2-kit.html
 
-Hot Glue Gun -
+Hot Glue Gun - https://www.amazon.com/Surebonder-PRO2-100-100-Watt-Temperature-Industrial/dp/B006IY359K/ref=sr_1_34?s=arts-crafts&ie=UTF8&qid=1501343293&sr=1-34&keywords=hot+glue+gun
 
-M5 Screws -
+Screws - I salvaged screws from old electronics
 
 
 
 ## Assembly
-1. Print the case
+1. Print the case & lid
 2. Tap the mounting hole for the boards
-3. Hot glue the JST connector into its location
+3. Place the battery and zip tie it
 4. Screw in the relay module
-5. Place the battery and zip tie it
-6. Place the Fona + Arduino and screw it in place
+5. Hot glue the JST connector into its location
+6. Place the Arduino and screw it in place
+7. install the sim card on the Fona and the Fona on the Arduino
 7. Connect a JST cable to your door bell button
 8. Place the case close and connect the JST connector.
+
+Note: I use picture frame mounting "velcro" straps to mount the case and to be able to dismount it easily for charging and changes to the code.
 
 ## Software
 
 I started this project using one of the sample provided by Adafruit.
 
-I then modified it to deliver the feature I wanted.
+What followed is a modified version to deliver the feature I wanted.
 
-All you need to do is to upload the .ino into the arduino and you are good to go.
+All you need to do is change the host phone number, guest code, upload the .ino into the arduino and you are good to go.
 
 ## Usage
 There is two sets of access type: Guest and Host. Host is the owner of the device while guest is anyone trying to access the door with the access code.
